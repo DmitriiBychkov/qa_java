@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
@@ -43,6 +44,7 @@ public class LionTest {
     @Test
     public void lionGetKittensReturnsOne() throws Exception {
         Lion lion = new Lion(sex, feline);
+        Mockito.when(feline.getKittens()).thenReturn(1);
         int actualKittens = lion.getKittens();
         Assert.assertEquals("У львов должен быть один львёнок", expectedKittens, actualKittens);
     }
@@ -59,21 +61,9 @@ public class LionTest {
     @Test
     public void lionEatsLikeAPredator() throws Exception {
         Lion lion = new Lion(sex, feline);
+        Mockito.when(feline.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
         List<String> expectedKind = List.of("Животные", "Птицы", "Рыба");
         List<String> actualKind = lion.getFood();
         Assert.assertEquals("Лев ест как хищник", expectedKind, actualKind);
-    }
-
-    //    Проверка текста исключения пола
-    @Test
-    public void unknownSexLionExceptionTextTest() {
-        Exception exception = Assert.assertThrows(Exception.class, () -> new Lion("Оно", feline));
-        Assert.assertEquals("Используйте допустимые значения пола животного - самец или самка", exception.getMessage());
-    }
-
-    //    Проверка на удаление вывода исключения в else для пола
-    @Test(expected = Exception.class)
-    public void constructorThrowsExceptionOnUnsupportedSex() throws Exception {
-        new Lion("Оно", feline);
     }
 }
